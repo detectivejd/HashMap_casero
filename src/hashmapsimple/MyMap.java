@@ -123,7 +123,8 @@ public class MyMap<K, V> implements Map<K,V>{
      * @return int -> índice para obtener una entrada existente
      */
     private int getIndex(Object key) {
-        int ret = key.hashCode() % table.length;
+        int h = (key == null) ? 0 : key.hashCode(); 
+        int ret = h % table.length;
         if(ret < 0) {
             ret += table.length;
         }
@@ -158,8 +159,8 @@ public class MyMap<K, V> implements Map<K,V>{
      */
     private Entry<K, V> getEntry(Object key) {
         int index = getIndex(key);
-        if(index != -1){
-            if (table[index] != null && table[index].getKey().equals(key)){
+        if(table[index] != null){
+            if (table[index].getKey().equals(key)){
                 return table[index];
             }            
         } 

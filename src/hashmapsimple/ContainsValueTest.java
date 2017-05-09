@@ -1,8 +1,7 @@
 package hashmapsimple;
 public class ContainsValueTest implements ITest
 {
-    @Override
-    public void test() {
+    private void probando_verificacion_normal(){
         MyMap<Integer,String>col= new MyMap();
         col.put(1, "Deborah");
         col.put(2, "Tommy");
@@ -10,36 +9,60 @@ public class ContainsValueTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
+        System.out.println("\t ---PROBANDO VERIFICACIÓN NORMAL---");
         System.out.println(" ");
-        System.out.println("con containsValue: " + col.containsValue("Franco"));
-        System.out.println("con containsValue: " + col.containsValue("Rodrigo"));
-        System.out.println("con containsValue: " + col.containsValue(null));
-        /*------------------------------------------------------*/
-        System.out.println(" ");
-        System.out.println("\t ---TODOS LOS DATOS---");
-        System.out.println("tamaño -> " + col.size());        
-        System.out.println(" ");         
-        System.out.println(" --valores-- ");
-        col.values().stream().forEach((s) -> {
-            if(s.equals("Deborah") || s.equals("Franco") || s.equals("Miguel")){ 
-                Console.println(Console.ANSI_PURPLE,s);
-            } else {
-                System.out.println(s);
-            }
-        });
-        System.out.println(" ");
-        System.out.println(" --claves-- ");
-        col.keySet().stream().forEach((s) -> {
-            System.out.println(s);            
-        });
-        System.out.println(" ");
-        System.out.println(" --entradas-- ");
         col.entrySet().stream().forEach((e)->{
-            if(e.getKey() == 1 || e.getKey() == 3 || e.getKey() == 5){
-                Console.println(Console.ANSI_PURPLE,"clave -> "+ e.getKey() +" valor -> "+e.getValue());
-            } else {
-                System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-            }
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());            
         });
+        System.out.println("");
+        System.out.println("Verificando clave Deborah: " + col.containsValue("Deborah"));
+        System.out.println("Verificando clave Franco: " + col.containsValue("Franco"));
+        System.out.println("Verificando clave Miguel: " + col.containsValue("Miguel"));
+    }
+    private void probando_verificacion_con_claves_nulas_que_no_debería_obtener_nada(){
+        MyMap<Integer,String>col= new MyMap();
+        col.put(1, "Deborah");
+        col.put(2, "Tommy");
+        col.put(3, "Franco");
+        col.put(4, "Manuela");
+        col.put(5, "Miguel");
+        col.put(6, "Denisse");
+        System.out.println("\t ---PROBANDO VERIFICACIÓN CON VALORES NULOS---");
+        System.out.println(" ");
+        col.entrySet().stream().forEach((e)->{
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());            
+        });
+        System.out.println("");
+        System.out.println("Verificando valor Deborah: " + col.containsValue("Deborah"));
+        System.out.println("Verificando valor nula 1: " + col.containsKey(null));
+        System.out.println("Verificando valor Miguel: " + col.containsValue("Miguel"));
+        System.out.println("Verificando valor nula 2: " + col.containsKey(null));
+    }
+    private void probando_verificacion_con_claves_inexistentes_que_debería_dar_falso(){
+        MyMap<Integer,String>col= new MyMap();
+        col.put(1, "Deborah");
+        col.put(2, "Tommy");
+        col.put(3, "Franco");
+        col.put(4, "Manuela");
+        col.put(5, "Miguel");
+        col.put(6, "Denisse");
+        System.out.println("\t ---PROBANDO VERIFICACIÓN CON VALORES INEXISTENTES---");
+        System.out.println(" ");
+        col.entrySet().stream().forEach((e)->{
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());            
+        });
+        System.out.println("");
+        System.out.println("Verificando valor Deborah: " + col.containsValue("Deborah"));
+        System.out.println("Verificando valor Pepe (no existe): " + col.containsValue("Pepe"));
+        System.out.println("Verificando clave Miguel: " + col.containsValue("Miguel"));
+        System.out.println("Verificando clave Luis (no existe): " + col.containsValue("Luis"));
+    }
+    @Override
+    public void test() {
+        probando_verificacion_normal();
+        System.out.println("");
+        probando_verificacion_con_claves_nulas_que_no_debería_obtener_nada();
+        System.out.println("");
+        probando_verificacion_con_claves_inexistentes_que_debería_dar_falso();
     }    
 }
