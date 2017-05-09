@@ -9,7 +9,7 @@ public class DownTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
-        System.out.println("\t ---PROBANDO BORRADO CON CLAVES INEXISTENTES--");
+        System.out.println("\t ---PROBANDO BORRADO NORMAL--");
         System.out.println(" ");
         System.out.println("* antes: ");
         col.entrySet().stream().forEach((e)->{
