@@ -1,5 +1,5 @@
 package hashmapsimple;
-public class DownTest implements ITest
+public class DownTest extends Test
 {
     private void probando_borrado_normal(){
         MyMap<Integer,String>col= new MyMap();
@@ -9,20 +9,14 @@ public class DownTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
-        System.out.println("\t ---PROBANDO BORRADO NORMAL--");
-        System.out.println(" ");
-        System.out.println("* antes: ");
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
-        System.out.println(" ");
-        System.out.println("* después: ");
+        /*---------------------------------------*/
         col.remove(1);
         col.remove(3);
         col.remove(6);
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
+        /*---------------------------------------*/
+        System.out.println("\t ---PROBANDO BORRADO NORMAL--");
+        System.out.println(" ");
+        this.check(col.size() == 3);
     }
     private void probando_borrado_con_claves_nulas(){
         MyMap<Integer,String>col= new MyMap();
@@ -32,21 +26,15 @@ public class DownTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
-        System.out.println("\t ---PROBANDO BORRADO CON CLAVES INEXISTENTES--");
-        System.out.println(" ");
-        System.out.println("* antes: ");
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
-        System.out.println(" ");
-        System.out.println("* después: ");
+        /*-------------------------------------------------*/
         col.remove(1);
         col.remove(null);
         col.remove(3);
         col.remove(null);
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
+        /*-------------------------------------------------*/
+        System.out.println("\t ---PROBANDO BORRADO CON CLAVES NULAS--");
+        System.out.println(" ");
+        this.check(col.size() == 4);
     }
     private void probando_borrado_con_claves_inexistentes(){
         MyMap<Integer,String>col= new MyMap();
@@ -56,21 +44,15 @@ public class DownTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
-        System.out.println("\t ---PROBANDO BORRADO CON CLAVES INEXISTENTES--");
-        System.out.println(" ");
-        System.out.println("* antes: ");
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
-        System.out.println(" ");
-        System.out.println("* después: ");
+        /*-------------------------------------------------*/
         col.remove(1);
         col.remove(7);
         col.remove(3);
         col.remove(9);
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
+        /*-------------------------------------------------*/
+        System.out.println("\t ---PROBANDO BORRADO CON CLAVES INEXISTENTES--");
+        System.out.println(" ");
+        this.check(col.size() == 4);
     }
     private void limpieza_total(){
         MyMap<Integer,String>col= new MyMap();
@@ -80,18 +62,12 @@ public class DownTest implements ITest
         col.put(4, "Manuela");
         col.put(5, "Miguel");
         col.put(6, "Denisse");
+        /*-------------------------------------------------*/
+        col.clear();
+        /*-------------------------------------------------*/
         System.out.println("\t ---PROBANDO LIMPIEZA DE INFORMACIÓN---");
         System.out.println(" ");
-        System.out.println("* antes: ");
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
-        System.out.println(" ");
-        System.out.println("* después: ");
-        col.clear();
-        col.entrySet().stream().forEach((e)->{
-            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
-        });
+        this.check(col.isEmpty());
     }
     @Override
     public void test() {
