@@ -7,9 +7,6 @@ public class ConstructorTest extends Test
         m1.put(2, "Tommy");
         m1.put(3, "Franco");
         m1.put(4, "Manuela");
-        /*---------------------------------------*/
-        System.out.println("\t ---PROBANDO CONSTRUCTOR NORMAL---");
-        System.out.println(" ");
         this.check(m1.size() == 4);
     }
     private void creando_map_con_capacidad_de_dos_elementos(){
@@ -21,10 +18,6 @@ public class ConstructorTest extends Test
         m2.put(5, "Manuela");
         m2.put(6, "Andrea");
         m2.put(7, "Luisa");
-        /*---------------------------------------*/
-        System.out.println("\t ---PROBANDO CONSTRUCTOR CON CAPACIDAD DEFINIDA DE 2 ELEMENTOS---");        
-        System.out.println(" "); 
-        this.check(m2.size() == 2);
         this.check(m2.size() == 7);
     }
     private void pasar_datos_de_hashmap_a_nuestro_map(){
@@ -37,10 +30,7 @@ public class ConstructorTest extends Test
         MyMap<Integer,String> m3 = new MyMap();
         m3.putAll(m);
         /*---------------------------------------*/
-        System.out.println("\t ---PROBANDO TRANSFERENCIA DE DATOS DE UN HASHMAP AL NUESTRO---"); 
-        System.out.println(" ");
         this.check(m3.size() == 4);
-        this.check(m3.isEmpty());
     }
     private void creando_map_con_capacidad_de_un_elemento(){
         MyMap<Integer,String> m4 = new MyMap(1);
@@ -49,10 +39,7 @@ public class ConstructorTest extends Test
         m4.put(3, "Arnoldno");
         m4.put(4, "Edinson");
         /*---------------------------------------*/
-        System.out.println("\t ---PROBANDO CONSTRUCTOR CON CAPACIDAD DEFINIDA DE UN ELEMENTO---"); 
-        System.out.println(" ");  
         this.check(m4.size() == 4);
-        this.check(m4.size() == 1);
     }
     @Override
     public void test() {
