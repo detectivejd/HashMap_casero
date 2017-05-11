@@ -1,6 +1,10 @@
 package hashmapsimple;
 public class ConstructorTest extends Test
 {
+    private void creando_map_vacio(){
+        MyMap<Integer,String>m= new MyMap();
+        System.out.println("tamaño: " + m.size());
+    }
     private void creando_map_normal(){
         MyMap<Integer,String>m1= new MyMap();
         m1.put(1, "Deborah");
@@ -43,6 +47,8 @@ public class ConstructorTest extends Test
     }
     @Override
     public void test() {
+        creando_map_vacio();
+        System.out.println("");
         creando_map_normal();
         System.out.println("");
         creando_map_con_capacidad_de_dos_elementos();

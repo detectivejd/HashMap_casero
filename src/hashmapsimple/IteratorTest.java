@@ -1,25 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hashmapsimple;
-
-/**
- *
- * @author detectivejd
- */
-public class IteratorTest implements ITest
+public class IteratorTest extends Test
 {
-    @Override
-    public void test() {
-        MyMap<Integer,String>col= new MyMap();
-        col.put(1, "Deborah");
-        col.put(2, "Tommy");
-        col.put(3, "Franco");
-        col.put(4, "Manuela");
-        col.put(5, "Miguel");
-        col.put(6, "Denisse");
+    private void probando_recorridos_todo(){
+        this.restart();
         System.out.println(" --valores-- ");
         col.values().stream().forEach((s) -> {
             System.out.println(s);
@@ -34,6 +17,34 @@ public class IteratorTest implements ITest
         col.entrySet().stream().forEach((e)->{
             System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
         });
+    }
+    private void probando_recorridos_iterar1(){
+        this.elem1();
+        col.entrySet().stream().forEach((e)->{
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
+        });
+    }
+    private void probando_recorridos_iterar2(){
+        this.elem2();
+        col.entrySet().stream().forEach((e)->{
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
+        });
+    }
+    private void probando_recorridos_iterar3(){
+        this.elem3();
+        col.entrySet().stream().forEach((e)->{
+            System.out.println("clave -> "+ e.getKey() +" valor -> "+e.getValue());
+        });
+    }
+    @Override
+    public void test() {
+        probando_recorridos_iterar1();
+        System.out.println("");
+        probando_recorridos_iterar2();
+        System.out.println("");
+        probando_recorridos_iterar3();
+        System.out.println("");
+        probando_recorridos_todo();
     }
     
 }

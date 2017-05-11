@@ -31,11 +31,12 @@ public class Cuerpo {
         System.out.println("");
         t1 = new DownTest();
         t1.test();
-        /*
+        System.out.println("");
+        System.out.println("\t\t **PROBANDO RECORRIDOS DE NUESTRO MAP**");
         System.out.println("");
         t1 = new IteratorTest();
         t1.test();
-        */
+        
     }
     
 }
