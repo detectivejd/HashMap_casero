@@ -2,16 +2,28 @@ package hashmapsimple;
 public class ContainsValueTest extends Test
 {
     private void probando_verificacion_normal(){
-        this.check(col.containsValue("Deborah"));
-        this.check(col.containsValue("Franco"));
-        this.check(col.containsValue("Miguel"));
+        try {
+            col.containsValue("Deborah");
+            col.containsValue("Franco");
+            col.containsValue("Miguel");
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }    
     }
     private void probando_verificacion_con_claves_nulas_que_no_debería_obtener_nada(){
-        this.check(col.containsValue(null));        
+        try {
+            col.containsValue(null);
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }    
     }
     private void probando_verificacion_con_claves_inexistentes_que_debería_dar_falso(){
-        this.check(col.containsValue("Pepe"));
-        this.check(col.containsValue("Luis"));
+        try {
+            col.containsValue("Pepe");
+            col.containsValue("Luis");
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }    
     }
     @Override
     public void test() {
