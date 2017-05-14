@@ -1,79 +1,40 @@
 package hashmapsimple;
 public class DownTest extends Test
 {
-    private void probando_borrado_normal(){
-        try {
-            restart();
-            col.remove(1);
-            col.remove(3);
-            col.remove(6);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+    private void limpieza_total() throws Exception{
+        col.clear();
+        this.comprobar_que(col.isEmpty());
     }
-    private void probando_borrado_con_claves_nulas(){
-        try { 
-            restart();
-            col.remove(null);
-        } catch(Exception ex){
-            ex.printStackTrace();
+    private void probando_borrado(Object[][]arreglo, Object[]criterio) throws Exception{
+        col.clear();
+        for (Object[] arreglo1 : arreglo) {
+            col.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
         }
-    }
-    private void probando_borrado_con_claves_inexistentes(){
-        try {
-            restart();
-            col.remove(7);
-            col.remove(9);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    private void probando_borrado_un_elemento(){
-        try {
-            elem1();
-            col.remove(1);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    private void probando_borrado_un_elemento_en_2(){
-        try {
-            elem2();
-            col.remove(1);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    private void probando_borrado_un_elemento_en_3(){
-        try {
-            elem3();
-            col.remove(1);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    private void limpieza_total(){
-        try {
-            restart();
-            col.clear();
-        } catch(Exception ex){
-            ex.printStackTrace();
+        for(Object c : criterio){
+            col.remove(Integer.valueOf(c.toString()));
+            this.comprobar_que(col.get(Integer.valueOf(c.toString())) == null);
         }
     }
     @Override
     public void test() {
-        probando_borrado_normal();
-        System.out.println("");
-        probando_borrado_con_claves_nulas();
-        System.out.println("");
-        probando_borrado_con_claves_inexistentes();
-        System.out.println("");
-        probando_borrado_un_elemento();
-        System.out.println("");
-        probando_borrado_un_elemento_en_2();
-        System.out.println("");
-        probando_borrado_un_elemento_en_3();
-        System.out.println("");
-        limpieza_total();
+        try { 
+            System.out.println("\t\t **PROBANDO BORRADO Y LIMPIEZA DE DATOS**");
+            System.out.println("");        
+            probando_borrado(restart1(), new Object[]{1,3,6});
+            System.out.println("");
+            probando_borrado(restart1(), new Object[]{null});
+            System.out.println("");
+            probando_borrado(restart1(), new Object[]{7,9});
+            System.out.println("");
+            probando_borrado(elem_1(), new Object[]{1});
+            System.out.println("");
+            probando_borrado(elem_2(), new Object[]{1});
+            System.out.println("");
+            probando_borrado(elem_3(), new Object[]{1});
+            System.out.println("");
+            limpieza_total();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
     }    
 }
