@@ -1,35 +1,63 @@
 package hashmapsimple;
 public class DownTest extends Test
 {
+    MyMap<Integer,String>map; 
+    public DownTest() {
+        map = new MyMap();
+    }
+    //<editor-fold desc="relleno de datos">
+    private Object[][] restart1(){
+        return new Object[][] {
+            new Object[]{1,"Deborah"},
+            new Object[]{2,"Tommy"},
+            new Object[]{3,"Franco"},
+            new Object[]{4,"Manuela"},
+            new Object[]{5,"Miguel"},
+            new Object[]{6,"Denisse"}
+        };        
+    }        
+    private Object[][] elem_1(){
+        return new Object[][]{ new Object[]{1,"Deborah"} };        
+    }
+    private Object[][] elem_2(){
+        return new Object[][]{
+            new Object[]{1,"Deborah"},
+            new Object[]{2,"Franco"}
+        };
+    }
+    private Object[][] elem_3(){
+        return new Object[][]{
+            new Object[]{1,"Deborah"},
+            new Object[]{2,"Franco"},
+            new Object[]{3,"Tommy"} 
+        };
+    }
+    //</editor-fold>
+    //<editor-fold desc="pruebas">
     private void limpieza_total() throws Exception{
-        col.clear();
-        this.comprobar_que(col.isEmpty());
+        map.clear();
+        this.comprobar_que(map.isEmpty());
     }
     private void probando_borrado(Object[][]arreglo, Object[]criterio) throws Exception{
-        col.clear();
+        map.clear();
         for (Object[] arreglo1 : arreglo) {
-            col.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
+            map.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
         }
         for(Object c : criterio){
-            col.remove(Integer.valueOf(c.toString()));
-            this.comprobar_que(col.get(Integer.valueOf(c.toString())) == null);
+            map.remove(Integer.valueOf(c.toString()));
+            this.comprobar_que(map.get(Integer.valueOf(c.toString())) == null);
         }
     }
+    //</editor-fold>
     @Override
     public void test() {
         try { 
             probando_borrado(restart1(), new Object[]{1,3,6});
-            System.out.println("");
             probando_borrado(restart1(), new Object[]{null});
-            System.out.println("");
             probando_borrado(restart1(), new Object[]{7,9});
-            System.out.println("");
             probando_borrado(elem_1(), new Object[]{1});
-            System.out.println("");
             probando_borrado(elem_2(), new Object[]{1});
-            System.out.println("");
             probando_borrado(elem_3(), new Object[]{1});
-            System.out.println("");
             limpieza_total();
         } catch(Exception ex){
             ex.printStackTrace();

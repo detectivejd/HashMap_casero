@@ -48,13 +48,9 @@ public class ConstructorTest extends Test
     public void test() {
         try {
             creando_map_vacio();
-            System.out.println("");
             creando_map_normal();
-            System.out.println("");
             creando_map_con_capacidad_de_dos_elementos();
-            System.out.println("");
             pasar_datos_de_hashmap_a_nuestro_map();
-            System.out.println(" ");
             creando_map_con_capacidad_de_un_elemento(); 
         } catch(Exception ex){
             ex.printStackTrace();
