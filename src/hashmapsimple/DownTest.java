@@ -18,8 +18,6 @@ public class DownTest extends Test
     @Override
     public void test() {
         try { 
-            System.out.println("\t\t **PROBANDO BORRADO Y LIMPIEZA DE DATOS**");
-            System.out.println("");        
             probando_borrado(restart1(), new Object[]{1,3,6});
             System.out.println("");
             probando_borrado(restart1(), new Object[]{null});

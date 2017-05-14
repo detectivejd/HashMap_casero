@@ -22,8 +22,6 @@ public class ContainsKeyTest extends Test
     @Override
     public void test() {
         try {
-            System.out.println("\t\t **PROBANDO VERIFICACIÓN DE CLAVES**");
-            System.out.println("");
             probando_verificacion_normal();
             System.out.println("");
             probando_verificacion_con_claves_nulas_que_no_debería_obtener_nada();

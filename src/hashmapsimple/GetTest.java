@@ -25,8 +25,6 @@ public class GetTest extends Test
     @Override
     public void test() {
         try {
-            System.out.println("\t\t **PROBANDO BÚSQUEDA DE DATOS POR CLAVE**");
-            System.out.println("");
             probando_busqueda_normal();
             System.out.println("");
             probando_busqueda_con_claves_nulas_que_no_debería_obtener_nada();

@@ -30,8 +30,6 @@ public class UpTest extends Test
     @Override
     public void test() {
         try {
-            System.out.println("\t\t **PROBANDO INSERCIÓN DE DATOS**");
-            System.out.println("");
             this.probando_insercion(nullKey());
             System.out.println(" ");
             probando_insercion_con_claves_existentes_que_deberia_cambiar_sus_valores();

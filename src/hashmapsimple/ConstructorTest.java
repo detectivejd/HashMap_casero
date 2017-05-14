@@ -47,8 +47,6 @@ public class ConstructorTest extends Test
     @Override
     public void test() {
         try {
-            System.out.println("\t\t **PROBANDO CONSTRUCTORES**");
-            System.out.println("");
             creando_map_vacio();
             System.out.println("");
             creando_map_normal();
