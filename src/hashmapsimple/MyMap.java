@@ -109,26 +109,38 @@ public class MyMap<K, V> implements Map<K,V>{
                 if(e != null){
                     put(e.getKey(),e.getValue());
                 }
-            } 
-            
+            }            
         }
         int index = getIndex(key);
         table[index] = new Entry(key, value);
         size++;
     }
     /**
+     * Calcula la función hash de una clave
+     * 
+     * @param key
+     * @return int -> entero del cálculo de la función hash 
+     */
+    private int hash(Object key) {
+        int mod = key.hashCode() % table.length;
+        if(mod < 0){
+            return mod + table.length;
+        } else {
+            return mod;
+        }
+    }    
+    /**
      * Obtiene el índice de una entrada existente 
      * 
      * @param key -> clave
      * @return int -> índice para obtener una entrada existente
      */
-    private int getIndex(Object key) {
-        int h = (key == null) ? 0 : key.hashCode(); 
-        int ret = h % table.length;
-        if(ret < 0) {
-            ret += table.length;
+    private int getIndex(Object key) {        
+        int index = hash(key);
+        while (table[index] != null && !table[index].getKey().equals(key)) {
+            index = (index + 1) % (table.length -1);
         }
-        return ret;
+        return index;
     }
     /**
      * Encuentra un valor mediante una clave pasada por parámetro
@@ -215,13 +227,21 @@ public class MyMap<K, V> implements Map<K,V>{
         int index = getIndex(key);
         if(table[index] != null){
             Entry<K,V> e = table[index];
-            table[index] = table[size - 1];
-            table[size - 1] = null;
+            table[index] = table[last()];
+            table[last()] = null;
             size--;
             return e.getValue();                            
         }
         return null;
-    }   
+    }
+    private int last(){
+        for(int i = table.length -1; i > 0; i--){
+            if(table[i] != null){
+                return i;
+            }
+        }
+        return -1;
+    }
     /*-----------------------------------------------------------*/
     /**
      * Devuelve un conjunto de todas las claves almacenadas en 
