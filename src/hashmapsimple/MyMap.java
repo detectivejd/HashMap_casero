@@ -80,7 +80,7 @@ public class MyMap<K, V> implements Map<K,V>{
     @Override
     public V put(K key, V value) {
         if(key != null){
-            int index = this.getIndex(key);
+            int index = this.hash(key);
             if (table[index]!= null && table[index].getKey().equals(key)) {
                 V oldValue = table[index].getValue();
                 table[index].setValue(value);
@@ -111,36 +111,18 @@ public class MyMap<K, V> implements Map<K,V>{
                 }
             }            
         }
-        int index = getIndex(key);
+        int index = hash(key);
         table[index] = new Entry(key, value);
         size++;
     }
     /**
-     * Calcula la función hash de una clave
-     * 
-     * @param key
-     * @return int -> entero del cálculo de la función hash 
-     */
-    private int hash(Object key) {
-        int mod = key.hashCode() % table.length;
-        if(mod < 0){
-            return mod + table.length;
-        } else {
-            return mod;
-        }
-    }    
-    /**
-     * Obtiene el índice de una entrada existente 
+     * Obtiene el índice para una entrada hash nueva o existente 
      * 
      * @param key -> clave
      * @return int -> índice para obtener una entrada existente
      */
-    private int getIndex(Object key) {        
-        int index = hash(key);
-        while (table[index] != null && !table[index].getKey().equals(key)) {
-            index = (index + 1) % (table.length -1);
-        }
-        return index;
+    private int hash(Object key) {        
+        return (key.hashCode() & 0x7fffffff) % table.length;
     }
     /**
      * Encuentra un valor mediante una clave pasada por parámetro
@@ -170,7 +152,7 @@ public class MyMap<K, V> implements Map<K,V>{
      * @return Entry<K, V> -> entrada clave/valor
      */
     private Entry<K, V> getEntry(Object key) {
-        int index = getIndex(key);
+        int index = hash(key);
         if(table[index] != null){
             if (table[index].getKey().equals(key)){
                 return table[index];
@@ -224,8 +206,8 @@ public class MyMap<K, V> implements Map<K,V>{
      */
     @Override
     public V remove(Object key){
-        int index = getIndex(key);
-        if(table[index] != null){
+        int index = hash(key);
+        if(table[index] != null && table[index].getKey().equals(key)){
             Entry<K,V> e = table[index];
             table[index] = table[last()];
             table[last()] = null;
@@ -235,9 +217,11 @@ public class MyMap<K, V> implements Map<K,V>{
         return null;
     }
     private int last(){
-        for(int i = table.length -1; i > 0; i--){
-            if(table[i] != null){
-                return i;
+        if(size > 0){
+            for(int i = table.length -1; i > 0; i--){
+                if(table[i] != null){
+                    return i;
+                }
             }
         }
         return -1;
