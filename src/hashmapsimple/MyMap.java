@@ -6,14 +6,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-/**
- * @author detectivejd
- * @param <K>
- * @param <V> 
- */
-public class MyMap<K, V> implements Map<K,V>{
-    private int size;
+public class MyMap<K,V> implements Map<K,V>
+{
     private Entry<K,V>[] table;
+    private int size;
     /**
      * Construye un nuevo HashMap con una cantidad a almacenar por 
      * defecto
@@ -45,6 +41,25 @@ public class MyMap<K, V> implements Map<K,V>{
         this.putAll(m);
     }
     /**
+     * Devuelve la cantidad de elementos almacenados en nuestra
+     * estructura de datos
+     * 
+     * @return int -> entero 
+     */
+    @Override
+    public int size() {
+        return size;
+    }
+    /**
+     * Verifica si nuestra estructura de datos esta vacía o no
+     * 
+     * @return boolean -> verdadero o falso 
+     */
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+    /**
      * Limpia todas las entradas almacenadas de nuestro HashMap
      */
     @Override
@@ -54,20 +69,63 @@ public class MyMap<K, V> implements Map<K,V>{
         }
         size = 0;
     }
+    /*----------------------------------------------------------*/
     /**
-     * Transferiere toda una estructura de tipo Map a 
-     * nuestro HashMap "casero"
+     * Verifica si existe una entrada por medio de un valor pasado 
+     * por parámetro 
      * 
-     * @param m -> mapa de clave/valor
+     * @param value -> valor
+     * @return boolean -> verdadero o falso 
      */
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-        if(m.size() > 0){
-            m.entrySet().forEach((e) -> {
-                this.put(e.getKey(), e.getValue());
-            });
+    public boolean containsValue(Object value) {
+        for (Entry<K,V> entry : table) {
+            for (Entry e = entry; e != null; e = e.next) {
+                if (value != null && value.equals(e.getValue())){
+                    return true;
+                }
+            }
         }
+        return false;
     }
+    /*----------------------------------------------------------*/
+    /**
+     * Encuentra un valor mediante una clave pasada por parámetro
+     * 
+     * @param key -> clave
+     * @return V -> valor 
+     */
+    @Override
+    public V get(Object key) {
+        return (this.getEntry(key) == null) ? null : this.getEntry(key).getValue();
+    }
+    /**
+     * Verifica si existe una entrada por medio de una clave 
+     * pasada por parámetro
+     * 
+     * @param key -> clave
+     * @return boolean -> verdadero o falso
+     */
+    @Override
+    public boolean containsKey(Object key) {
+        return this.getEntry(key) != null;
+    }
+    /**
+     * Obtenemos una entrada mediante una clave pasada por parámetro
+     * 
+     * @param key -> clave
+     * @return Entry<K, V> -> entrada clave/valor
+     */
+    private Entry<K, V> getEntry(Object key) {
+        int hash = hash(key,table.length);
+        for (Entry e = table[hash]; e != null; e = e.next) {
+            if(e.getKey().equals(key)){
+                return e;
+            }
+        }
+        return null;
+    }
+    /*----------------------------------------------------------*/
     /**
      * Almacenamos una nueva entrada clave/valor a nuestro HashMap 
      * "casero", si nuestro map contiene una entrada con la key 
@@ -80,16 +138,19 @@ public class MyMap<K, V> implements Map<K,V>{
     @Override
     public V put(K key, V value) {
         if(key != null){
-            int index = this.hash(key);
-            if (table[index]!= null && table[index].getKey().equals(key)) {
-                V oldValue = table[index].getValue();
-                table[index].setValue(value);
-                return oldValue;
-            }  
+            int hash = hash(key,table.length);
+            for(Entry<K,V> e = table[hash]; e != null; e = e.next){
+                if(e.getKey().equals(key)){
+                    V oldValue = e.getValue();
+                    e.setValue(value);
+                    return oldValue;
+                }                
+            }
             this.addEntry(key, value);
-            return value;
+            return value;                     
+        } else {
+            return null;
         }
-        return null;
     }
     /**
      * Almacenamos la clave/valor a nuestra estructura de datos
@@ -111,92 +172,25 @@ public class MyMap<K, V> implements Map<K,V>{
                 }
             }            
         }
-        int index = hash(key);
-        table[index] = new Entry(key, value);
+        int hash = hash(key,table.length);
+        table[hash] = new Entry(key, value,table[hash]);
         size++;
     }
     /**
-     * Obtiene el índice para una entrada hash nueva o existente 
+     * Transferiere toda una estructura de tipo Map a 
+     * nuestro HashMap "casero"
      * 
-     * @param key -> clave
-     * @return int -> índice para obtener una entrada existente
-     */
-    private int hash(Object key) {        
-        return (key.hashCode() & 0x7fffffff) % table.length;
-    }
-    /**
-     * Encuentra un valor mediante una clave pasada por parámetro
-     * 
-     * @param key -> clave
-     * @return V -> valor 
+     * @param m -> mapa de clave/valor
      */
     @Override
-    public V get(Object key) {        
-        return (this.getEntry(key) == null) ? null : this.getEntry(key).getValue();
-    }
-    /**
-     * Verifica si existe una entrada por medio de una clave 
-     * pasada por parámetro
-     * 
-     * @param key -> clave
-     * @return boolean -> verdadero o falso
-     */
-    @Override
-    public boolean containsKey(Object key) {
-        return this.getEntry(key) != null;
-    }
-    /**
-     * Obtenemos una entrada mediante una clave pasada por parámetro
-     * 
-     * @param key -> clave
-     * @return Entry<K, V> -> entrada clave/valor
-     */
-    private Entry<K, V> getEntry(Object key) {
-        int index = hash(key);
-        if(table[index] != null){
-            if (table[index].getKey().equals(key)){
-                return table[index];
-            }            
-        } 
-        return null;
-    }
-    /**
-     * Verifica si existe una entrada por medio de un valor pasado 
-     * por parámetro 
-     * 
-     * @param value -> valor
-     * @return boolean -> verdadero o falso 
-     */
-    @Override
-    public boolean containsValue(Object value){
-        if(value != null){
-            for (Entry val : table) {
-                if (val != null && value.equals(val.getValue())){
-                    return true;
-                }            
-            }
+    public void putAll(Map<? extends K, ? extends V> m) {
+        if(m.size() > 0){
+            m.entrySet().forEach((e) -> {
+                this.put(e.getKey(), e.getValue());
+            });
         }
-        return false;       
     }
-    /**
-     * Devuelve la cantidad de elementos almacenados en nuestra
-     * estructura de datos
-     * 
-     * @return int -> entero 
-     */
-    @Override
-    public int size() {
-        return size;
-    }
-    /**
-     * Verifica si nuestra estructura de datos esta vacía o no
-     * 
-     * @return boolean -> verdadero o falso 
-     */
-    @Override
-    public boolean isEmpty(){
-        return size == 0;
-    }
+    /*----------------------------------------------------------*/
     /**
      * Elimina una entrada existente por medio de una clave 
      * pasada por parámetro
@@ -205,28 +199,35 @@ public class MyMap<K, V> implements Map<K,V>{
      * @return V -> valor 
      */
     @Override
-    public V remove(Object key){
-        int index = hash(key);
-        if(table[index] != null && table[index].getKey().equals(key)){
-            Entry<K,V> e = table[index];
-            table[index] = table[last()];
-            table[last()] = null;
-            size--;
-            return e.getValue();                            
+    public V remove(Object key) {
+        int hash = hash(key, table.length);
+        Entry<K,V> last = null;
+        for (Entry<K,V> e = table[hash]; e != null; e = e.next) {
+            if (key.equals(e.getKey())) {
+                if (last == null) {
+                    table[hash] = e.next;
+                } else {
+                    last.next = e.next;
+                }
+                size--;
+                return e.value;
+            }
+            last = e;
         }
         return null;
     }
-    private int last(){
-        if(size > 0){
-            for(int i = table.length -1; i > 0; i--){
-                if(table[i] != null){
-                    return i;
-                }
-            }
-        }
-        return -1;
+    /*----------------------------------------------------------*/
+    /**
+     * Genera un índice en base a una clave pasada por parámetro 
+     * 
+     * @param key -> clave
+     * @param length -> largo del array
+     * @return int -> índice para obtener una entrada existente
+     */
+    private int hash(Object key, int length) {
+        return (key == null) ? 0 : (key.hashCode() & 0x7fffffff) % length;
     }
-    /*-----------------------------------------------------------*/
+    /*----------------------------------------------------------*/       
     /**
      * Devuelve un conjunto de todas las claves almacenadas en 
      * nuestra estructura de datos
@@ -242,7 +243,7 @@ public class MyMap<K, V> implements Map<K,V>{
      * KeySet es una clase interna que utilizamos para las iteraciones
      * (recorridos que hacemos con foreach) de las claves
      */
-    private class KeySet extends AbstractSet<K>{
+    private class KeySet extends AbstractSet<K> {
         /**
          * Personaliza el recorrido de las claves
          * 
@@ -252,11 +253,6 @@ public class MyMap<K, V> implements Map<K,V>{
         public Iterator<K> iterator() {
             return new KeyIterator();
         }
-        /**
-         * Misma idea de la función size de nuestra estructura
-         * 
-         * @return int -> entero 
-         */
         @Override
         public int size() {
             return size;
@@ -291,7 +287,7 @@ public class MyMap<K, V> implements Map<K,V>{
      * Values es una clase interna que utilizamos para las iteraciones
      * (recorridos que hacemos con foreach) de los valores
      */
-    private class Values extends AbstractCollection<V>{
+    private class Values extends AbstractCollection<V> {
         /**
          * Personaliza el recorrido de los valores
          * 
@@ -301,11 +297,6 @@ public class MyMap<K, V> implements Map<K,V>{
         public Iterator<V> iterator() {
             return new ValueIterator();
         }
-        /**
-         * Misma idea de la función size de nuestra estructura
-         * 
-         * @return int -> entero 
-         */
         @Override
         public int size() {
             return size;
@@ -350,11 +341,6 @@ public class MyMap<K, V> implements Map<K,V>{
         public Iterator<Map.Entry<K, V>> iterator() {
             return new EntryIterator();
         }
-        /**
-         * Misma idea de la función size de nuestra estructura
-         * 
-         * @return int -> entero 
-         */
         @Override
         public int size() {
             return size;
@@ -382,21 +368,17 @@ public class MyMap<K, V> implements Map<K,V>{
      * @param <E> 
      */
     private abstract class HashIterator<E> implements Iterator<E> {
-        private int index = 0;
-        private Entry<K,V> currEntry = null;
-        private Entry<K,V> nextEntry = null;
+        private int index;
+        private Entry<K,V> curr;
+        private Entry<K,V> next;
         /**
          * Construye una nueva iteración hash
          */
         @SuppressWarnings("empty-statement")
         HashIterator() {
-            index = 0;
-            for(; index< size; index++){
-                if(table[index]!= null){
-                    nextEntry = table[index];
-                    break;
-                }
-            }
+            curr = null;
+            next = null;
+            findEntry(0);
         }
         /**
          * Verifica si hay una siguiente entrada
@@ -405,7 +387,7 @@ public class MyMap<K, V> implements Map<K,V>{
          */
         @Override
         public boolean hasNext() {
-            return nextEntry != null;
+            return next != null;
         }
         /**
          * Obtiene la entrada próxima, y también es una función 
@@ -415,22 +397,29 @@ public class MyMap<K, V> implements Map<K,V>{
          */
         @SuppressWarnings("empty-statement")
         public Entry<K,V> nextEntry() {
-            currEntry = nextEntry;
-            nextEntry = table[index];
-            index++;            
-            if (index <= size && table[index] != null) {
-                nextEntry = table[index];               
-            } else {
-                nextEntry = null;
-                for (;index < size; index++){
-                    if (table[index] != null){
-                        nextEntry = table[index];
-                    }
+            curr = next;
+            next = next.next;
+            if (next == null) {
+                findEntry(index + 1);
+            }
+            return curr;
+        }
+        /**
+         * Obtiene un índice dónde la entrada no sea nula
+         * 
+         * @param n -> entero (índice)
+         */
+        private void findEntry(int n) {
+            for (int i = n; i < table.length; i++) {
+                Entry entry = table[i];
+                if (entry != null) {
+                    next = entry;
+                    index = i;
+                    break;
                 }
             }
-            return currEntry;
         }
-    }   
+    }
     /*-----------------------------------------------------------*/
     /**
      * Clase interna para definir las entradas clave/valor que 
@@ -439,21 +428,23 @@ public class MyMap<K, V> implements Map<K,V>{
      * @param <K>
      * @param <V> 
      */
-    class Entry<K,V> implements Map.Entry<K,V>{
+    class Entry<K,V> implements Map.Entry<K,V> {
         final K key;
         V value;
-        Entry(K k, V v) {
-            value = v;
-            key = k;
-        }
+        Entry<K,V> next;
+        public Entry(K xkey, V xvalue, Entry<K, V> xnext) {
+            this.key = xkey;
+            this.value = xvalue;
+            this.next = xnext;
+        }        
         @Override
-        public final K getKey() {
+        public K getKey() {
             return key;
         }
         @Override
-        public final V getValue() {
+        public V getValue() {
             return value;
-        }        
+        }
         @Override
         public V setValue(V v) {
             V val = value;
@@ -463,6 +454,6 @@ public class MyMap<K, V> implements Map<K,V>{
         @Override
         public String toString() {
             return getKey() + " -> " + getValue();
-        }
-    }
+        }        
+    } 
 }
