@@ -94,7 +94,11 @@ public class UpTest extends Test
     private void probando_insercion(Object[][] arreglo) throws Exception{
         map.clear();
         for (Object[] arreglo1 : arreglo) {
-            map.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
+            if(arreglo1[0] == null){
+                map.put(null, arreglo1[1].toString());
+            } else {
+                map.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
+            }            
         }
         for(Map.Entry<Integer,String>e : map.entrySet()){
             this.comprobar_que(map.get(e.getKey()) != null);

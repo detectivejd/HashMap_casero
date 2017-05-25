@@ -36,6 +36,7 @@ public class GetTest extends Test
         this.comprobar_que(map.get(-9) == null);        
     }
     private void probando_busqueda_vacia() throws Exception {
+        map.clear();
         this.comprobar_que(map.get(1) == null);        
     }
     //</editor-fold>

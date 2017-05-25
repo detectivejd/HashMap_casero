@@ -44,8 +44,13 @@ public class DownTest extends Test
             map.put(Integer.valueOf(arreglo1[0].toString()), arreglo1[1].toString());
         }
         for(Object c : criterio){
-            map.remove(Integer.valueOf(c.toString()));
-            this.comprobar_que(map.get(Integer.valueOf(c.toString())) == null);
+            if(c == null){
+                map.remove(null);
+                this.comprobar_que(map.get(null) == null);
+            } else {
+                map.remove(Integer.valueOf(c.toString()));
+                this.comprobar_que(map.get(Integer.valueOf(c.toString())) == null);
+            }                        
         }
     }
     //</editor-fold>
