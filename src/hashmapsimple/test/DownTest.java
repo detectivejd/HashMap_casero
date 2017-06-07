@@ -1,4 +1,7 @@
-package hashmapsimple;
+package hashmapsimple.test;
+
+import hashmapsimple.structs.MyMap;
+
 public class DownTest extends Test
 {
     MyMap<Integer,String>map; 

@@ -1,4 +1,7 @@
-package hashmapsimple;
+package hashmapsimple.test;
+
+import hashmapsimple.structs.MyMap;
+
 public class ConstructorTest extends Test
 {
     private void creando_map_vacio() throws Exception{

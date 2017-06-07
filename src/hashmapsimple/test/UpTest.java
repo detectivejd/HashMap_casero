@@ -1,4 +1,5 @@
-package hashmapsimple;
+package hashmapsimple.test;
+import hashmapsimple.structs.MyMap;
 import java.util.Map;
 public class UpTest extends Test
 {
