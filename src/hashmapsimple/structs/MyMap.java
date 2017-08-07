@@ -13,8 +13,8 @@ import java.util.Set;
  */
 public class MyMap<K,V> implements Map<K,V>
 {
-    private Entry<K,V>[] table;
-    private int size;
+    transient Entry<K,V>[] table;
+    transient int size;
     /**
      * Construye un nuevo HashMap con una cantidad a almacenar por 
      * defecto
@@ -181,6 +181,9 @@ public class MyMap<K,V> implements Map<K,V>
                 }
             }            
         }
+        this.createEntry(key,value);
+    }
+    protected void createEntry(K key, V value){
         int hash = hash(key,table.length);
         table[hash] = new Entry(key, value);
         size++;
@@ -233,7 +236,7 @@ public class MyMap<K,V> implements Map<K,V>
      * @param key -> clave
      * @return int -> índice para obtener una entrada existente
      */
-    private int hash(Object key, int length) {
+    protected int hash(Object key, int length) {
         return (key == null) ? 0 : (key.hashCode() & 0x7fffffff) % length;
     }
     /*----------------------------------------------------------*/
