@@ -34,6 +34,7 @@ public class MyMap<K,V> implements Map<K,V>
         }
         table = new Entry[xcap];
         size = 0;
+        init();
     }
     /**
      * Construye un nuevo HashMap que utilizamos para almacenar toda una 
@@ -45,6 +46,11 @@ public class MyMap<K,V> implements Map<K,V>
         this(m.size());
         this.putAll(m);
     }
+    /**
+     * Gancho de inicialización para subclases (MyLinkedMap). Este método 
+     * es llamado en los "constructores" para la cabecera de los enlaces.
+     */
+    void init() { }
     /**
      * Devuelve la cantidad de elementos almacenados en nuestra
      * estructura de datos
@@ -148,9 +154,11 @@ public class MyMap<K,V> implements Map<K,V>
                 if(e.getKey().equals(key)){
                     V oldValue = e.getValue();
                     e.setValue(value);
+                    e.recordAccess(this);
                     return oldValue;
                 } else if(e.next == null){
                     e.next = new Entry(key,value);
+                    e.recordAccess(this);
                     size++;
                     return value;
                 }                
@@ -170,11 +178,8 @@ public class MyMap<K,V> implements Map<K,V>
     private void addEntry(K key, V value){
         if(size >= table.length * 0.75){
             Entry<K,V>[] tmp = table;
-            size = 0;
             table = Arrays.copyOf(table, table.length * 2);
-            for(int i = 0; i < table.length; i++){
-                table[i] = null;
-            }
+            this.clear();
             for (Entry<K, V> e : tmp) {     
                 if(e != null){
                     put(e.getKey(),e.getValue());
@@ -183,6 +188,12 @@ public class MyMap<K,V> implements Map<K,V>
         }
         this.createEntry(key,value);
     }
+    /**
+     * Creamos una entrada nueva
+     * 
+     * @param key
+     * @param value 
+     */
     protected void createEntry(K key, V value){
         int hash = hash(key,table.length);
         table[hash] = new Entry(key, value);
@@ -221,6 +232,7 @@ public class MyMap<K,V> implements Map<K,V>
                 } else {
                     last.next = e.next;
                 }
+                e.recordRemoval(this);
                 size--;
                 return (V) e.value;
             }
@@ -478,6 +490,24 @@ public class MyMap<K,V> implements Map<K,V>
             V val = value;
             value = v;
             return val;
-        }        
+        }
+        /**
+         * Método utilizado en subclases (MyLinkedMap) para sobreescribir 
+         * el valor de una clave existente
+         * 
+         * @param m 
+         */
+        void recordAccess(MyMap<K,V> m) { }
+        /**
+         * Método utilizado en subclases (MyLinkedMap) para el borrado
+         * de la entrada desde la tabla
+         * 
+         * @param m 
+         */
+        void recordRemoval(MyMap<K,V> m) { }        
+        @Override
+        public String toString() {
+            return "["+ this.getKey() + " -> " + this.getValue() + "]";
+        }
     } 
 }
